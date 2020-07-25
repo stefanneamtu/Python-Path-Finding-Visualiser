@@ -1,4 +1,4 @@
-from classes import *
+from .classes import *
 
 # Initialise the screen 
 WIDTH, HEIGHT = 1000, 600
@@ -56,4 +56,5 @@ def draw(cells):
     draw_cells(cells)
     draw_grid()
     pygame.display.update()
+
 

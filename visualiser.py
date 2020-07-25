@@ -1,6 +1,6 @@
 import queue
-from classes import *
-from draw_functions import draw, init_cells, reset_cells
+from lib.classes import *
+from lib.draw_functions import draw, init_cells, reset_cells
 
 pygame.init()
 
