@@ -7,7 +7,7 @@ class Colours:
     ORANGE = (255, 69, 0)   # End cell
     BLUE = (30, 144, 255)   # Path cell
     GREEN = (0, 255, 0)     # Visited cell
-    RED = (255, 0, 0)       # Visited border cell
+    RED = (220, 20, 60)     # Visited border cell
     GREY = (192, 192, 192)  # Border cell
 
 class Cell:
@@ -21,6 +21,10 @@ class Cell:
 
     def get_coords(self):
         return (self.x, self.y)
+
+    def get_heuristic_value(self, end_cell):
+        x, y = end_cell.get_coords()
+        return abs(x - self.x) + abs(y - self.y)
 
     def change_colour(self, colour):
         self.colour = colour
@@ -44,7 +48,7 @@ class Cell:
         return self.colour == Colours.BLACK
     
     def is_visited(self):
-        return self.colour == Colours.GREEN
+        return self.colour == Colours.GREEN or self.colour == Colours.RED
 
     def make_start(self):
         self.colour = Colours.ORANGE
@@ -57,3 +61,6 @@ class Cell:
 
     def reset_cell(self):
         self.colour = Colours.WHITE
+
+    def __lt__(self, other):
+        return False
