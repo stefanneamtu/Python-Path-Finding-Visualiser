@@ -7,7 +7,7 @@ class Colours:
     ORANGE = (255, 69, 0)   # End cell
     BLUE = (30, 144, 255)   # Path cell
     GREEN = (0, 255, 0)     # Visited cell
-    RED = (220, 20, 60)     # Visited border cell
+    RED = (220, 20, 60)     # Neighbouring cell
     GREY = (192, 192, 192)  # Border cell
 
 class Cell:
@@ -25,9 +25,7 @@ class Cell:
     def get_heuristic_value(self, end_cell):
         x, y = end_cell.get_coords()
         return abs(x - self.x) + abs(y - self.y)
-
-    def change_colour(self, colour):
-        self.colour = colour
+        #return math.sqrt((x - self.x) ** 2 + (y - self.y) ** 2)
 
     def draw_cell(self, screen):
         pygame.draw.rect(screen, self.colour, self.rectangle, 0)
@@ -50,14 +48,29 @@ class Cell:
     def is_visited(self):
         return self.colour == Colours.GREEN or self.colour == Colours.RED
 
+    def is_available(self):
+        return not self.is_obstacle() and not self.is_visited() and not self.is_border()
+
     def make_start(self):
         self.colour = Colours.ORANGE
 
     def make_end(self):
         self.colour = Colours.CYAN
 
-    def make_wall(self):
+    def make_obstacle(self):
         self.colour = Colours.BLACK
+
+    def make_path(self):
+        self.colour = Colours.BLUE
+
+    def make_visited(self):
+        self.colour = Colours.GREEN
+
+    def make_border(self):
+        self.colour = Colours.GREY
+
+    def make_neighbour(self):
+        self.colour = Colours.RED
 
     def reset_cell(self):
         self.colour = Colours.WHITE
