@@ -1,8 +1,13 @@
 from .classes import *
 
+pygame.font.init()
+
 # Initialise the screen 
 WIDTH, HEIGHT = 1000, 600
 SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
+
+BUTTON_FONT = pygame.font.SysFont('comicsans', 80)
+INSTR_FONT = pygame.font.SysFont('comicsans', 25)
 
 # Variables
 GRID_WIDTH = WIDTH // 20
@@ -52,9 +57,66 @@ def reset_cells(cells):
     create_border(cells)
 
 def draw(cells):
-    """Draw everything"""
+    """Draws the grid"""
     draw_cells(cells)
     draw_grid()
     pygame.display.update()
 
+def draw_best_path(cells, start_cell, end_cell, parent):
+    """Draws the best path to reach the end cell from the start cell"""
+    if parent == None:
+        return
+    while parent[end_cell] != start_cell:
+        end_cell = parent[end_cell]
+        end_cell.make_path()
+        draw(cells)
 
+def draw_text(string, colour, y_offset):
+    """Draws text on the screen"""
+    text = BUTTON_FONT.render(string, 1, colour)
+    x = (WIDTH - text.get_width()) // 2
+    y = (HEIGHT - text.get_height()) // 2 + y_offset
+    return SCREEN.blit(text, (x, y))
+
+def draw_instructions(y_start):
+    """Draws the instruction text"""
+    instr_string = ['Instructions:', 'ESC - exit', 'R - resets grid', 
+            'Enter - starts the algorithm', 'Left click - sets cells', 
+            'Right click - resets cells']
+    y_offset = 30
+
+    for i in range(len(instr_string)):
+        instr_text = INSTR_FONT.render(instr_string[i], 1, Colours.BLACK)
+        x = (WIDTH - instr_text.get_width()) // 2
+        y = (HEIGHT - instr_text.get_height()) // 2 
+        SCREEN.blit(instr_text, (x, y_start + y + y_offset * i))
+
+
+def start_menu(clock, FPS):
+    """Starts the algorithm selection menu"""
+    button_rect = None
+    button_text = 'Start'
+    y_offset = 50
+
+    SCREEN.fill(Colours.MENU_COLOUR)
+
+    draw_instructions(120)
+
+    running = True
+    while running:
+        clock.tick(FPS)
+        draw_text('A* pathing visualiser', Colours.BLUE, -180)
+        button_rect = draw_text(button_text, Colours.BLACK, y_offset)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT or \
+                (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
+                return False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if button_rect.collidepoint(pygame.mouse.get_pos()):
+                    return True
+        
+        if button_rect.collidepoint(pygame.mouse.get_pos()):
+            button_rect = draw_text(button_text, Colours.CYAN, y_offset)
+
+        pygame.display.update()

@@ -9,6 +9,7 @@ class Colours:
     GREEN = (0, 255, 0)     # Visited cell
     RED = (220, 20, 60)     # Neighbouring cell
     GREY = (192, 192, 192)  # Border cell
+    MENU_COLOUR = (220, 213, 185)
 
 class Cell:
     

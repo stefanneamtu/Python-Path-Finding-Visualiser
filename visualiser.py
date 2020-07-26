@@ -1,6 +1,6 @@
 import queue
 from lib.classes import *
-from lib.draw_functions import draw, init_cells, reset_cells
+from lib.draw_functions import draw, init_cells, reset_cells, start_menu, draw_best_path
 
 pygame.init()
 
@@ -59,15 +59,6 @@ def a_star(cells, start_cell, end_cell):
             current_cell.make_visited()
     return None
 
-def draw_best_path(cells, start_cell, end_cell, parent):
-    """Draws the best path to reach the end cell from the start cell"""
-    if parent == None:
-        return
-    while parent[end_cell] != start_cell:
-        end_cell = parent[end_cell]
-        end_cell.make_path()
-        draw(cells)
-
 def listen_for_events(cells, start_cell, end_cell):
     """Event listener"""
     for event in pygame.event.get():
@@ -118,7 +109,7 @@ def listen_for_events(cells, start_cell, end_cell):
 
 def main():
     cells = init_cells()
-    running = True
+    running = start_menu(clock, FPS)
     start_cell, end_cell = None, None
     while running:
         clock.tick(FPS)
