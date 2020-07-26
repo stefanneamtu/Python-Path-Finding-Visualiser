@@ -1,5 +1,5 @@
 # Python-Path-Finding-Visualiser
-Graphic visualiser for the popular path finding algorithms.
+Graphic visualiser for the A* path finding algorithm.
 
 Commands:  
 
